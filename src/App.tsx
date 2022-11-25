@@ -14,10 +14,14 @@ function App() {
     {
       id: 2,
       title: 'Todo 2',
-      completed: false,
+      completed: true,
       priority: 'high',
     },
   ]
+
+  // A function that checks how many todos are completed
+  const completedTodos = data.filter((todo) => todo.completed === true)
+  const completedTodosCount = completedTodos.length
 
   return (
     <div className="App">
@@ -29,6 +33,10 @@ function App() {
           placeholder="Feed the cat..."
           className="add_input"
         />
+        <div className="todo_stats">
+          <p>Total todos {data.length}</p>
+          <p>Completed todos {completedTodosCount} </p>
+        </div>
       </div>
       {data.map(({ title, priority }) => {
         return (
