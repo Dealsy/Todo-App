@@ -22,8 +22,10 @@ function App() {
   ]
 
   const [todos, setTodos] = useState(data)
+
+  console.log(todos)
   const [newTodo, setNewTodo] = useState('')
-  const [newPriority, setNewPriority] = useState('')
+  const [newPriority, setNewPriority] = useState('medium')
   const [newCompleted, setNewCompleted] = useState(false)
 
   // A function to add a new todo
@@ -36,8 +38,21 @@ function App() {
     }
     setTodos([...todos, newTodoObj])
     setNewTodo('')
-    setNewPriority('')
     setNewCompleted(false)
+  }
+
+  // A function to set a todo as completed
+  const setCompleted = (id: number) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          completed: !todo.completed,
+        }
+      }
+      return todo
+    })
+    setTodos(newTodos)
   }
 
   // A function to delete a todo
@@ -50,8 +65,8 @@ function App() {
   // I will use useMemo to memoize this function because it has the potential to
   // become expensive, although it is unlikely in this case.
   const completedTodos = useMemo(
-    () => data.filter((todo) => todo.completed === true),
-    [data]
+    () => todos.filter((todo) => todo.completed === true),
+    [todos]
   )
   const completedTodosCount = completedTodos.length
 
@@ -76,13 +91,20 @@ function App() {
           <div key={id} onClick={() => {}} className="todo_item">
             <Input onChange={() => {}} value={title} className="todo_input" />
             {priority}
-            <Button
-              className="delete_button"
-              onClick={() => {
-                deleteTodo(id)
-              }}
-              text="X"
-            />
+            <div className="todo_buttons">
+              <Button
+                className="complete_button"
+                onClick={() => setCompleted(id)}
+                text="/"
+              />
+              <Button
+                className="delete_button"
+                onClick={() => {
+                  deleteTodo(id)
+                }}
+                text="X"
+              />
+            </div>
           </div>
         )
       })}

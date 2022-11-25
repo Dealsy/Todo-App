@@ -103,6 +103,13 @@
   outline: none;
 }
 
+.todo_buttons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
 
 /* Buttons */
 
@@ -146,5 +153,12 @@
   transform: translateY(4px);
 }
 
+.complete_button{
+  font-size: 0.7rem;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
 
 
