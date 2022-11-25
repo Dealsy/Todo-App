@@ -5,6 +5,7 @@
 - Button
 - Task List component
 - Input
+- Accordion
 
 ## Add and view tasks
 
