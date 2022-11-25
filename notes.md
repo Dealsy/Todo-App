@@ -81,3 +81,7 @@
 
 - Total tasks component
 - Completed tasks component
+
+## Bonuses if time allows
+
+- Add drag and drop functionality to the task list
