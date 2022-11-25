@@ -1,9 +1,11 @@
 type inputProps = {
-  type: string
-  placeholder: string
-  value: string
+  type?: string
+  placeholder?: string
+  value?: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
+  labelText?: string
+  id?: string
 }
 
 const Input = ({
@@ -12,15 +14,23 @@ const Input = ({
   value,
   placeholder,
   type,
+  labelText,
+  id,
 }: inputProps) => {
   return (
-    <input
-      className={className}
-      onChange={onChange}
-      value={value}
-      placeholder={placeholder}
-      type={'text' || type}
-    />
+    <div className="input_container">
+      <label className="label" htmlFor={id}>
+        {labelText}
+      </label>
+      <input
+        id={id}
+        className={className}
+        onChange={onChange}
+        value={value}
+        placeholder={placeholder}
+        type={'text' || type}
+      />
+    </div>
   )
 }
 

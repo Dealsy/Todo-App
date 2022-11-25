@@ -1,41 +1,128 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  height: 100vh;
+  margin: auto;
+
+  /*  CSS variables */
+
+  --borderBottom: #ccc;
+
+
+
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+
+
+
+/* Add task Input component */
+
+.todo_header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--borderBottom);
+  gap: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.label{
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  min-width: fit-content
 }
 
-.card {
-  padding: 2em;
+.add_input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border: none;
+  border-bottom: 1px solid var(--borderBottom);
 }
 
-.read-the-docs {
-  color: #888;
+.add_input:focus {
+  outline: none;
+  border-bottom: 1px solid #000;
+
+}
+
+/* end  */
+
+
+/*  todoItem  */
+
+.todo_item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 1rem;
+  border-bottom: 1px solid var(--borderBottom);
+  gap: 1rem;
+}
+
+.todo_input{
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border: none;
+  border-bottom: 1px solid var(--borderBottom);
+}
+
+.todo_input:focus {
+  outline: none;
+  border-bottom: 1px solid #000;
+}
+
+
+
+/* Buttons */
+
+.add_button{
+  height: 50px;
+  width: 50px;
+  padding: 0.7rem;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.add_button:hover {
+  background-color: #3e8e41;
+}
+
+.add_button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+} 
+
+.delete_button{
+  font-size: 0.7rem;
+  border: none;
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+}
+
+.delete_button:hover {
+  background-color: #ad2f26;
+}
+
+.delete_button:active {
+  background-color: #f44336;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
