@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import './App.css'
 
@@ -47,7 +47,12 @@ function App() {
   }
 
   // A function that checks how many todos are completed
-  const completedTodos = data.filter((todo) => todo.completed === true)
+  // I will use useMemo to memoize this function because it has the potential to
+  // become expensive, although it is unlikely in this case.
+  const completedTodos = useMemo(
+    () => data.filter((todo) => todo.completed === true),
+    [data]
+  )
   const completedTodosCount = completedTodos.length
 
   return (
@@ -59,6 +64,7 @@ function App() {
           onChange={(e) => setNewTodo(e.target.value)}
           placeholder="Feed the cat..."
           className="add_input"
+          value={newTodo}
         />
         <div className="todo_stats">
           <p>Total todos {todos.length}</p>
@@ -67,7 +73,7 @@ function App() {
       </div>
       {todos.map(({ title, priority, id }) => {
         return (
-          <Button key={id} onClick={() => {}} className="todo_item">
+          <div key={id} onClick={() => {}} className="todo_item">
             <Input onChange={() => {}} value={title} className="todo_input" />
             {priority}
             <Button
@@ -77,7 +83,7 @@ function App() {
               }}
               text="X"
             />
-          </Button>
+          </div>
         )
       })}
     </div>

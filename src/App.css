@@ -80,6 +80,28 @@
   border-bottom: 1px solid #000;
 }
 
+.todo_item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 1rem;
+  border-bottom: 1px solid var(--borderBottom);
+  background-color: rgb(237, 237, 237);
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.todo_item:hover {
+  background-color: #f5f5f5;
+  outline: none;
+}
+
+.todo_item:focus {
+  outline: none;
+}
 
 
 /* Buttons */
@@ -125,24 +147,4 @@
 }
 
 
-.todo_item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  margin: 1rem;
-  border-bottom: 1px solid var(--borderBottom);
-  background-color: rgb(237, 237, 237);
-  gap: 1rem;
-  width: 100%;
-}
 
-.todo_item:hover {
-  background-color: #f5f5f5;
-  outline: none;
-}
-
-.todo_item:focus {
-  outline: none;
-}
