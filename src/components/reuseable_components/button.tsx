@@ -1,13 +1,15 @@
 type buttonProps = {
-  text: string
+  text?: string
   onClick: () => void
   className?: string
+  children?: React.ReactNode
 }
 
-const Button = ({ text, onClick, className }: buttonProps) => {
+const Button = ({ text, onClick, className, children }: buttonProps) => {
   return (
     <button onClick={onClick} className={className}>
       {text}
+      {children}
     </button>
   )
 }
