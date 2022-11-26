@@ -1,7 +1,6 @@
 #root {
   height: 100vh;
   margin: auto;
-  font-family: inter;
 
   /*  CSS variables */
 
@@ -10,9 +9,6 @@
 
 
 }
-
-
-
 
 
 /* Add task Input component */
