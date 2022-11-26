@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import './App.css'
 
@@ -9,13 +9,13 @@ function App() {
   const data = [
     {
       id: 1,
-      title: 'Todo 1',
+      title: 'Todo Example 1 ',
       completed: false,
       priority: 'medium',
     },
     {
       id: 2,
-      title: 'Todo 2',
+      title: 'Todo Example 2 Completed',
       completed: true,
       priority: 'high',
     },
@@ -27,9 +27,17 @@ function App() {
   const [newTodo, setNewTodo] = useState('')
   const [newPriority, setNewPriority] = useState('medium')
   const [newCompleted, setNewCompleted] = useState(false)
+  const [error, setError] = useState('')
+
+  const noTodos = todos.length === 0
 
   // A function to add a new todo
   const addTodo = () => {
+    if (newTodo === '') {
+      setError('Todo cannot be empty')
+
+      return
+    }
     const newTodoObj = {
       id: todos.length + 1,
       title: newTodo,
@@ -38,6 +46,7 @@ function App() {
     }
     setTodos([...todos, newTodoObj])
     setNewTodo('')
+    setError('')
     setNewCompleted(false)
   }
 
@@ -63,7 +72,8 @@ function App() {
 
   // A function that checks how many todos are completed
   // I will use useMemo to memoize this function because it has the potential to
-  // become expensive, although it is unlikely in this case.
+  // become expensive, although it is unlikely in this case, however, I like to prepare for
+  // future problems if I can see them coming.
   const completedTodos = useMemo(
     () => todos.filter((todo) => todo.completed === true),
     [todos]
@@ -78,17 +88,30 @@ function App() {
         <Input
           onChange={(e) => setNewTodo(e.target.value)}
           placeholder="Feed the cat..."
-          className="add_input"
+          className={error ? 'add_input_error' : 'add_input'}
           value={newTodo}
+          error={error}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') addTodo()
+          }}
         />
+
         <div className="todo_stats">
           <p>Total todos {todos.length}</p>
           <p>Completed todos {completedTodosCount} </p>
         </div>
       </div>
-      {todos.map(({ title, priority, id }) => {
+      <Button text="Name" onClick={() => {}} />
+      <Button text="Priority" onClick={() => {}} />
+      {noTodos && (
+        <h1 className="noTodos">ADD A TODO ABOVE, AND IT WILL APPEAR HERE</h1>
+      )}
+      {todos.map(({ title, priority, id, completed }) => {
         return (
-          <div key={id} onClick={() => {}} className="todo_item">
+          <div
+            key={id}
+            className={`todo_item ${completed && 'todo_completed'} `}
+          >
             <Input onChange={() => {}} value={title} className="todo_input" />
             {priority}
             <div className="todo_buttons">

@@ -13,13 +13,11 @@
 
 - input new task
 - Add a new task to the list when the user clicks the button and the input is not empty
-- When a task is clicked, it should open a modal with the task details
 
 ### Components
 
 - Add variant of button component
 - reusable task component
-- Modal component for viewing task details
 
 ## Delete a task
 
@@ -38,7 +36,7 @@
 
 - Add complete button to task component
 - When complete button is clicked, the task should be marked as complete
-- When a task is marked as complete, it should be crossed out
+- When a task is marked as complete, it should become green
 
 ### Components
 

@@ -6,6 +6,8 @@ type inputProps = {
   className?: string
   labelText?: string
   id?: string
+  error?: string
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 const Input = ({
@@ -16,20 +18,26 @@ const Input = ({
   type,
   labelText,
   id,
+  error,
+  onKeyDown,
 }: inputProps) => {
   return (
     <div className="input_container">
       <label className="label" htmlFor={id}>
         {labelText}
       </label>
-      <input
-        id={id}
-        className={className}
-        onChange={onChange}
-        value={value}
-        placeholder={placeholder}
-        type={'text' || type}
-      />
+      <div className="add_input_div">
+        <input
+          onKeyDown={onKeyDown}
+          id={id}
+          className={className}
+          onChange={onChange}
+          value={value}
+          placeholder={placeholder}
+          type={'text' || type}
+        />
+        {error && <p className="error">{error}</p>}
+      </div>
     </div>
   )
 }
