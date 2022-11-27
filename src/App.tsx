@@ -1,4 +1,7 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+
+import useDebounce from './hooks/useDebounce'
 
 import './App.css'
 
@@ -8,13 +11,13 @@ import Input from './components/reuseable_components/input'
 function App() {
   const data = [
     {
-      id: 1,
+      id: '1',
       title: 'Todo Example 1 ',
       completed: false,
       priority: 'medium',
     },
     {
-      id: 2,
+      id: '2',
       title: 'Todo Example 2 Completed',
       completed: true,
       priority: 'high',
@@ -26,6 +29,7 @@ function App() {
   console.log(todos)
   const [newTodo, setNewTodo] = useState('')
   const [newPriority, setNewPriority] = useState('medium')
+  const [search, setSearch] = useState('')
   const [newCompleted, setNewCompleted] = useState(false)
   const [error, setError] = useState('')
 
@@ -39,7 +43,7 @@ function App() {
       return
     }
     const newTodoObj = {
-      id: todos.length + 1,
+      id: uuidv4(),
       title: newTodo,
       completed: newCompleted,
       priority: newPriority,
@@ -51,7 +55,7 @@ function App() {
   }
 
   // A function to set a todo as completed
-  const setCompleted = (id: number) => {
+  const setCompleted = (id: string) => {
     const newTodos = todos.map((todo) => {
       if (todo.id === id) {
         return {
@@ -65,10 +69,18 @@ function App() {
   }
 
   // A function to delete a todo
-  const deleteTodo = (id: number) => {
+  const deleteTodo = (id: string) => {
     const newTodos = todos.filter((todo) => todo.id !== id)
     setTodos(newTodos)
   }
+
+  const debouncedSearch = useDebounce(search, 200)
+  const filteredTodos =
+    debouncedSearch === ''
+      ? todos
+      : todos.filter((x: any) =>
+          x.title.toString().toLowerCase().includes(search)
+        )
 
   // A function that checks how many todos are completed
   // I will use useMemo to memoize this function because it has the potential to
@@ -87,7 +99,7 @@ function App() {
         <Button className="add_button" onClick={addTodo} text="+" />
         <Input
           onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Feed the cat..."
+          placeholder="Create a new task..."
           className={error ? 'add_input_error' : 'add_input'}
           value={newTodo}
           error={error}
@@ -101,12 +113,19 @@ function App() {
           <p>Completed todos {completedTodosCount} </p>
         </div>
       </div>
-      <Button text="Name" onClick={() => {}} />
-      <Button text="Priority" onClick={() => {}} />
+      <div className="search_container">
+        <Input
+          placeholder="Search for a name"
+          onChange={(e) => setSearch(e.target.value)}
+          className="search_input"
+        />
+        <Button text="Priority" onClick={() => {}} />
+      </div>
       {noTodos && (
         <h1 className="noTodos">ADD A TODO ABOVE, AND IT WILL APPEAR HERE</h1>
       )}
-      {todos.map(({ title, priority, id, completed }) => {
+
+      {filteredTodos.map(({ title, priority, id, completed }) => {
         return (
           <div
             key={id}
