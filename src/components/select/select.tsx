@@ -4,15 +4,24 @@ type SelectProps = {
   value?: string
   labelText?: string
   id?: string
-  error?: string
   children?: React.ReactNode
+  defaultValue?: string
 }
 
-const Select = ({ children, className }: SelectProps) => {
+const Select = ({
+  children,
+  className,
+  labelText,
+  value,
+  id,
+  onChange,
+  defaultValue,
+}: SelectProps) => {
   return (
     <div className={className}>
-      <select>
-        <option>{children}</option>
+      <label>{labelText}</label>
+      <select defaultValue={defaultValue} value={value} onChange={onChange}>
+        {children}
       </select>
     </div>
   )

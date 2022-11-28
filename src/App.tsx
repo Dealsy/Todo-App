@@ -1,45 +1,48 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
+import { Todo } from '../types/types'
 import useDebounce from './hooks/useDebounce'
 
 import './App.css'
 
 import Button from './components/reuseable_components/button'
 import Input from './components/reuseable_components/input'
+import Select from './components/select/select'
 
 function App() {
-  const data = [
-    {
-      id: '1',
-      title: 'Todo Example 1 ',
-      completed: false,
-      priority: 'medium',
-    },
-    {
-      id: '2',
-      title: 'Todo Example 2 Completed',
-      completed: true,
-      priority: 'high',
-    },
-  ]
-
-  const [todos, setTodos] = useState(data)
-
-  console.log(todos)
+  const [todos, setTodos] = useState<Todo>(() => {
+    // get the todos from localstorage
+    const savedTodos = localStorage.getItem('todos')
+    // if there are todos stored
+    if (savedTodos) {
+      // return the parsed JSON object back to a javascript object
+      return JSON.parse(savedTodos)
+      // otherwise
+    } else {
+      // return an empty array
+      return []
+    }
+  })
   const [newTodo, setNewTodo] = useState('')
   const [newPriority, setNewPriority] = useState('medium')
+  const [filterPriority, setFilterPriority] = useState('Show All')
   const [search, setSearch] = useState('')
   const [newCompleted, setNewCompleted] = useState(false)
   const [error, setError] = useState('')
 
   const noTodos = todos.length === 0
 
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+    // add the todos as a dependancy because we want to update the
+    // localstorage anytime the todos state changes
+  }, [todos])
+
   // A function to add a new todo
   const addTodo = () => {
     if (newTodo === '') {
       setError('Todo cannot be empty')
-
       return
     }
     const newTodoObj = {
@@ -74,13 +77,46 @@ function App() {
     setTodos(newTodos)
   }
 
+  // A function to Edit a todo
+  const editTodo = (id: string, newTitle: string) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          title: newTitle,
+        }
+      }
+      return todo
+    })
+    setTodos(newTodos)
+  }
+
+  // Gets the value of the select input
+  const selectedValue = (priorityValue: string) => {
+    setFilterPriority(priorityValue)
+  }
+
+  // Search the todos based on title using a debounce hook
   const debouncedSearch = useDebounce(search, 200)
   const filteredTodos =
     debouncedSearch === ''
       ? todos
-      : todos.filter((x: any) =>
-          x.title.toString().toLowerCase().includes(search)
-        )
+      : todos.filter((todo: any) => todo.title.toString().includes(search))
+
+  // Combine the search and filter
+  const combinedFilter = useMemo(() => {
+    return filteredTodos.filter((todo: any) => {
+      if (filterPriority === 'Show All') {
+        return filteredTodos
+      } else if (filterPriority === 'High') {
+        return todo.priority === 'high'
+      } else if (filterPriority === 'Medium') {
+        return todo.priority === 'medium'
+      } else if (filterPriority === 'Low') {
+        return todo.priority === 'low'
+      }
+    })
+  }, [filteredTodos, filterPriority])
 
   // A function that checks how many todos are completed
   // I will use useMemo to memoize this function because it has the potential to
@@ -113,43 +149,56 @@ function App() {
           <p>Completed todos {completedTodosCount} </p>
         </div>
       </div>
-      <div className="search_container">
-        <Input
-          placeholder="Search for a name"
-          onChange={(e) => setSearch(e.target.value)}
-          className="search_input"
-        />
-        <Button text="Priority" onClick={() => {}} />
-      </div>
+      {noTodos ? (
+        ''
+      ) : (
+        <div className="search_container">
+          <Input
+            placeholder="Search for a name"
+            onChange={(e) => setSearch(e.target.value)}
+            className="search_input"
+          />
+
+          <select
+            defaultValue={'Select'}
+            onChange={(e) => selectedValue(e.target.value)}
+          >
+            <option disabled>Select</option>
+            <option value="Show All">Show all</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+      )}
       {noTodos && (
         <h1 className="noTodos">ADD A TODO ABOVE, AND IT WILL APPEAR HERE</h1>
       )}
 
-      {filteredTodos.map(({ title, priority, id, completed }) => {
-        return (
-          <div
-            key={id}
-            className={`todo_item ${completed && 'todo_completed'} `}
-          >
-            <Input onChange={() => {}} value={title} className="todo_input" />
-            {priority}
-            <div className="todo_buttons">
-              <Button
-                className="complete_button"
-                onClick={() => setCompleted(id)}
-                text="/"
-              />
-              <Button
-                className="delete_button"
-                onClick={() => {
-                  deleteTodo(id)
-                }}
-                text="X"
-              />
-            </div>
+      {combinedFilter.map(({ title, priority, id, completed }) => (
+        <div key={id} className={`todo_item ${completed && 'todo_completed'} `}>
+          <Input
+            onChange={(e) => editTodo(id, e.target.value)}
+            value={title}
+            className="todo_input"
+          />
+          {priority}
+          <div className="todo_buttons">
+            <Button
+              className="complete_button"
+              onClick={() => setCompleted(id)}
+              text="/"
+            />
+            <Button
+              className="delete_button"
+              onClick={() => {
+                deleteTodo(id)
+              }}
+              text="X"
+            />
           </div>
-        )
-      })}
+        </div>
+      ))}
     </div>
   )
 }
