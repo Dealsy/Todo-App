@@ -1,7 +1,6 @@
 type SelectProps = {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
   className?: string
-  value?: string
   labelText?: string
   id?: string
   children?: React.ReactNode
@@ -12,15 +11,19 @@ const Select = ({
   children,
   className,
   labelText,
-  value,
   id,
   onChange,
   defaultValue,
 }: SelectProps) => {
   return (
     <div className={className}>
-      <label>{labelText}</label>
-      <select defaultValue={defaultValue} value={value} onChange={onChange}>
+      <label id={id}>{labelText}</label>
+      <select
+        className="select_dropdown"
+        id={id}
+        defaultValue={defaultValue}
+        onChange={onChange}
+      >
         {children}
       </select>
     </div>

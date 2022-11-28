@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test": "vitest",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.1",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "flow": "^0.2.3",
@@ -18,11 +20,17 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@types/jest": "^29.2.3",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@types/uuid": "^8.3.4",
     "@vitejs/plugin-react": "^2.2.0",
+    "jsdom": "^20.0.3",
+    "prettier": "^2.8.0",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "vitest": "^0.25.3"
   }
 }

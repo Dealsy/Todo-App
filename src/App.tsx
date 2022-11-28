@@ -2,13 +2,13 @@ import { useEffect, useMemo, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Todo } from '../types/types'
+import Search from './components/search/search'
+import Todoitem from './components/todoItem/todoitem'
 import useDebounce from './hooks/useDebounce'
 
 import './App.css'
 
-import Button from './components/reuseable_components/button'
-import Input from './components/reuseable_components/input'
-import Select from './components/select/select'
+import Header from './components/header/header'
 
 function App() {
   const [todos, setTodos] = useState<Todo>(() => {
@@ -25,12 +25,13 @@ function App() {
     }
   })
   const [newTodo, setNewTodo] = useState('')
-  const [newPriority, setNewPriority] = useState('medium')
+  const [newPriority, setNewPriority] = useState('Medium')
   const [filterPriority, setFilterPriority] = useState('Show All')
   const [search, setSearch] = useState('')
   const [newCompleted, setNewCompleted] = useState(false)
   const [error, setError] = useState('')
 
+  console.log(todos)
   const noTodos = todos.length === 0
 
   useEffect(() => {
@@ -91,6 +92,20 @@ function App() {
     setTodos(newTodos)
   }
 
+  //  A function to update the priority of a todo
+  const updatePriority = (id: string, newPriority: string) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          priority: newPriority,
+        }
+      }
+      return todo
+    })
+    setTodos(newTodos)
+  }
+
   // Gets the value of the select input
   const selectedValue = (priorityValue: string) => {
     setFilterPriority(priorityValue)
@@ -109,11 +124,15 @@ function App() {
       if (filterPriority === 'Show All') {
         return filteredTodos
       } else if (filterPriority === 'High') {
-        return todo.priority === 'high'
+        return todo.priority === 'High'
       } else if (filterPriority === 'Medium') {
-        return todo.priority === 'medium'
+        return todo.priority === 'Medium'
       } else if (filterPriority === 'Low') {
-        return todo.priority === 'low'
+        return todo.priority === 'Low'
+      } else if (filterPriority === 'Completed') {
+        return todo.completed === true
+      } else if (filterPriority === 'Not Completed') {
+        return todo.completed === false
       }
     })
   }, [filteredTodos, filterPriority])
@@ -129,75 +148,32 @@ function App() {
   const completedTodosCount = completedTodos.length
 
   return (
-    <div className="App">
-      <div className="todo_header">
-        <h1>Todo List</h1>
-        <Button className="add_button" onClick={addTodo} text="+" />
-        <Input
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Create a new task..."
-          className={error ? 'add_input_error' : 'add_input'}
-          value={newTodo}
-          error={error}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') addTodo()
-          }}
-        />
-
-        <div className="todo_stats">
-          <p>Total todos {todos.length}</p>
-          <p>Completed todos {completedTodosCount} </p>
-        </div>
-      </div>
+    <div className="container">
+      <Header
+        setNewTodo={setNewTodo}
+        addTodo={addTodo}
+        newTodo={newTodo}
+        error={error}
+        todos={todos}
+        completedTodosCount={completedTodosCount}
+      />
       {noTodos ? (
-        ''
-      ) : (
-        <div className="search_container">
-          <Input
-            placeholder="Search for a name"
-            onChange={(e) => setSearch(e.target.value)}
-            className="search_input"
-          />
-
-          <select
-            defaultValue={'Select'}
-            onChange={(e) => selectedValue(e.target.value)}
-          >
-            <option disabled>Select</option>
-            <option value="Show All">Show all</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-          </select>
-        </div>
-      )}
-      {noTodos && (
         <h1 className="noTodos">ADD A TODO ABOVE, AND IT WILL APPEAR HERE</h1>
+      ) : (
+        <Search setSearch={setSearch} selectedValue={selectedValue} />
       )}
 
       {combinedFilter.map(({ title, priority, id, completed }) => (
-        <div key={id} className={`todo_item ${completed && 'todo_completed'} `}>
-          <Input
-            onChange={(e) => editTodo(id, e.target.value)}
-            value={title}
-            className="todo_input"
-          />
-          {priority}
-          <div className="todo_buttons">
-            <Button
-              className="complete_button"
-              onClick={() => setCompleted(id)}
-              text="/"
-            />
-            <Button
-              className="delete_button"
-              onClick={() => {
-                deleteTodo(id)
-              }}
-              text="X"
-            />
-          </div>
-        </div>
+        <Todoitem
+          id={id}
+          completed={completed}
+          editTodo={editTodo}
+          title={title}
+          priority={priority}
+          updatePriority={updatePriority}
+          setCompleted={setCompleted}
+          deleteTodo={deleteTodo}
+        />
       ))}
     </div>
   )

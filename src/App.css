@@ -5,6 +5,12 @@
   /*  CSS variables */
 
   --borderBottom: #ccc;
+  --greenButton: #4CAF50;
+  --greenButtonHover: #3e8e41;
+}
+
+.container{
+  padding-bottom: 1rem;
 }
 
 
@@ -17,7 +23,7 @@
   padding: 0 20px;
   border-bottom: 1px solid var(--borderBottom);
   gap: 2rem;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
 }
 
 .input_container {
@@ -101,10 +107,9 @@
   margin: 1rem;
   border-bottom: 1px solid var(--borderBottom);
   background-color: rgb(237, 237, 237);
-  border-radius: 5px;
+  border-radius: 1rem;
   gap: 1rem;
   width: 100%;
-  cursor: pointer;
 }
 
 .todo_item:hover {
@@ -117,10 +122,10 @@
 }
 
 .todo_completed {
-  background: #48c34d;
+  background: #7476f1;
 }
 .todo_completed:hover {
-  background: #48c34d;
+  background: #5355d5;
 }
 
 .todo_buttons{
@@ -142,9 +147,11 @@
 .search_container{
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 12rem;
   margin-bottom: 1rem;
+  border-bottom: 1px solid var(--borderBottom);
 }
 
 .search_input{
@@ -152,9 +159,25 @@
   padding: 1rem;
   font-size: 1.5rem;
   border: none;
-  border-bottom: 1px solid var(--borderBottom);
+
 }
 
+.priority_select{
+  width: 20%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.select_dropdown{
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: none;
+  border-top: 1px solid var(--borderBottom);
+}
 
 
 
@@ -163,6 +186,17 @@
 .error{
   color: red;
   font-size: 1.2rem;
+}
+
+
+.check_Icon{
+  color: #fff;
+  height: 0.8rem;
+}
+
+.xmark_Icon{
+  color: #fff;
+  height: 0.9rem;
 }
 
 
@@ -175,13 +209,13 @@
   font-size: 1.5rem;
   border: none;
   border-radius: 50%;
-  background-color: #4CAF50;
+  background-color: var(--greenButton);
   color: white;
   cursor: pointer;
 }
 
 .add_button:hover {
-  background-color: #3e8e41;
+  background-color: var(--greenButtonHover);
 }
 
 .add_button:active {
@@ -196,6 +230,7 @@
   background-color: #f44336;
   color: white;
   cursor: pointer;
+  border-radius: 2rem;
 }
 
 .delete_button:hover {
@@ -206,14 +241,39 @@
   background-color: #f44336;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
+  
 }
 
 .complete_button{
   font-size: 0.7rem;
   border: none;
-  background-color: #4CAF50;
+  border-radius: 2rem;
+  background-color: var(--greenButton);
   color: white;
   cursor: pointer;
+}
+
+.complete_button:hover {
+  background-color: var(--greenButtonHover);
+}
+
+.complete_button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.complete_button_done{
+  font-size: 0.7rem;
+  border: none;
+  border-radius: 2rem;
+  background-color: #04345b;
+  color: white;
+  cursor: pointer;
+}
+
+.complete_button_done:hover {
+  background-color: #2d64f0;
 }
 
 
