@@ -23,7 +23,7 @@ const Header = ({
 }: HeaderProps) => {
   return (
     <div className="todo_header">
-      <h1>Todo List</h1>
+      <h1>Todo App</h1>
       <Button className="add_button" onClick={addTodo} Icon={Plus} />
       <Input
         onChange={(e) => setNewTodo(e.target.value)}

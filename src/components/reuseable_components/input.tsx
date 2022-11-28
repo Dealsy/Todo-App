@@ -26,6 +26,7 @@ const Input = ({
       <label className="label" htmlFor={id}>
         {labelText}
       </label>
+
       <div className="add_input_div">
         <input
           onKeyDown={onKeyDown}

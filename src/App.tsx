@@ -31,7 +31,7 @@ function App() {
   const [newCompleted, setNewCompleted] = useState(false)
   const [error, setError] = useState('')
 
-  console.log(todos)
+  // A variable to help hide componentes when there are no todos
   const noTodos = todos.length === 0
 
   useEffect(() => {
@@ -158,7 +158,9 @@ function App() {
         completedTodosCount={completedTodosCount}
       />
       {noTodos ? (
-        <h1 className="noTodos">ADD A TODO ABOVE, AND IT WILL APPEAR HERE</h1>
+        <h1 className="noTodos">
+          CREATE A NEW TODO ITEM ABOVE, AND IT WILL APPEAR HERE
+        </h1>
       ) : (
         <Search setSearch={setSearch} selectedValue={selectedValue} />
       )}
